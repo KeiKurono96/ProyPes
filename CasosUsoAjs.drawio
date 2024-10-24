@@ -41,7 +41,7 @@
         <mxCell id="QRCTrtcb7nfhT2A9gDhv-26" value="Ver Mis Calificaciones" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="250" y="400" width="140" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="QRCTrtcb7nfhT2A9gDhv-34" value="&amp;lt;&amp;lt;Extend&amp;gt;&amp;gt;" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" parent="1" source="QRCTrtcb7nfhT2A9gDhv-27" target="QRCTrtcb7nfhT2A9gDhv-33" edge="1">
+        <mxCell id="QRCTrtcb7nfhT2A9gDhv-34" value="&amp;lt;&amp;lt;Include&amp;gt;&amp;gt;" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" parent="1" source="QRCTrtcb7nfhT2A9gDhv-27" target="QRCTrtcb7nfhT2A9gDhv-33" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="QRCTrtcb7nfhT2A9gDhv-27" value="Generar Reporte" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
