@@ -134,7 +134,7 @@
         <mxCell id="Qi4TF_1PqVAcGWT0UyzA-10" value="&lt;b&gt;(Generar Alerta)&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="571" y="500" width="106" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Qi4TF_1PqVAcGWT0UyzA-11" value="Notificar Apoderado" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Qi4TF_1PqVAcGWT0UyzA-11" value="Recibir Alerta" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="460" y="630" width="140" height="50" as="geometry" />
         </mxCell>
       </root>
