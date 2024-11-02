@@ -13,7 +13,7 @@
         <mxCell id="QRCTrtcb7nfhT2A9gDhv-3" value="Sistema de Calificaciones AJS" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" parent="1" vertex="1">
           <mxGeometry x="490" y="130" width="80" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="Qi4TF_1PqVAcGWT0UyzA-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=13;" edge="1" parent="1" source="QRCTrtcb7nfhT2A9gDhv-4">
+        <mxCell id="Qi4TF_1PqVAcGWT0UyzA-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endSize=13;endArrow=block;endFill=1;strokeColor=default;" edge="1" parent="1" source="QRCTrtcb7nfhT2A9gDhv-4">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="135" y="230" as="targetPoint" />
           </mxGeometry>
