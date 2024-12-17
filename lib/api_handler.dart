@@ -12,7 +12,7 @@ class ApiHandler{
 
   Future<List<User>> getUserData() async{
     
-    checkPlatform();    
+    checkPlatform();
     List<User> data = [];
     final uri = Uri.parse(baseUri);
     final http = IOClient(ioc);

@@ -17,8 +17,19 @@ class _AddUserState extends State<AddUser> {
 
   void addUser() async {
     if(_formKey.currentState!.saveAndValidate()){
+      
       final data = _formKey.currentState!.value;
-      final user = User(id: 0, email: data['email'], password: data['password'],);
+      final user = User(
+        userId: 0, 
+        email: data['email'], 
+        password: data['password'],
+        nombres: data['nombres'],
+        apellidos: data["apellidos"],
+        sexo: data['sexo'],
+        direccion: data['direccion'],
+        telefono: data['telefono'],
+        tipo: data['tipo'],
+      );
 
       await apiHandler.addUser(user: user);
     }
@@ -63,7 +74,55 @@ class _AddUserState extends State<AddUser> {
                 validator: FormBuilderValidators.compose(
                   [FormBuilderValidators.required()]
                 ),
-              )
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'nombres',
+                decoration: const InputDecoration(labelText: 'Nombres'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required()]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'apellidos',
+                decoration: const InputDecoration(labelText: 'Apellidos'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required()]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'sexo',
+                decoration: const InputDecoration(labelText: 'Sexo'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required()]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'direccion',
+                decoration: const InputDecoration(labelText: 'Direccion'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required()]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'telefono',
+                decoration: const InputDecoration(labelText: 'Telefono'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required()]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'tipo',
+                decoration: const InputDecoration(labelText: 'Tipo'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required()]
+                ),
+              ),
             ],
           ),
         )

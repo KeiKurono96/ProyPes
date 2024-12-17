@@ -56,7 +56,7 @@ class _FindUserState extends State<FindUser> {
                 height: 10,
               ),
               ListTile(
-                leading: Text("${user.id}"),
+                leading: Text("${user.userId}"),
                 title: Text(user.email),
                 subtitle: Text(user.password),
               ),

@@ -23,12 +23,18 @@ class _EditPageState extends State<EditPage> {
       final data = _formKey.currentState!.value;
 
       final user = User(
-        id: widget.user.id,
+        userId: widget.user.userId,
         email: data['email'],
         password: data['password'],
+        nombres: data['nombres'],
+        apellidos: data["apellidos"],
+        sexo: data['sexo'],
+        direccion: data['direccion'],
+        telefono: data['telefono'],
+        tipo: data['tipo'],
       );
       
-      response = await apiHandler.updateUser(id: widget.user.id, user: user);
+      response = await apiHandler.updateUser(id: widget.user.userId, user: user);
     }
     if(!mounted) return;
     Navigator.pop(context);

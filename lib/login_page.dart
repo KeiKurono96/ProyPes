@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/api_handler.dart';
 import 'package:flutter_application_2/main_page.dart';
 import 'package:flutter_application_2/model.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,6 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormBuilderState>();
   ApiHandler apiHandler = ApiHandler();
   late List<User> data = [];
   var txtEmail = TextEditingController();
@@ -84,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Column(
                               children: [
                                 TextFormField(
+                                  key: _formKey,
                                   keyboardType: TextInputType.emailAddress,
                                   autocorrect: false,
                                   controller: txtEmail,
@@ -148,17 +151,22 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    if (data.where((e) => e.email == txtEmail.text && e.password == txtPassword.text).isNotEmpty) 
-                                    {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MainPage()),
-                                      );
+                                    if (_formKey.currentState!.saveAndValidate()) {
+                                      if (data.where((e) => e.email == txtEmail.text && e.password == txtPassword.text).isNotEmpty) 
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const MainPage()),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                          content: Text('No existe ese usuario')));
+                                      }
                                     } else {
                                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                        content: Text('Datos Inválidos')));
+                                          content: Text('Datos inválidos')));
                                     }
                                   },
                                 )

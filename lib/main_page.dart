@@ -144,13 +144,13 @@ class _MainPageState extends State<MainPage> {
                     getData();
                   });
                 },
-                leading: Text("${filteredData[index].id}"),
+                leading: Text("${filteredData[index].userId}"),
                 title: Text(filteredData[index].email),
                 subtitle: Text(filteredData[index].password),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline),
                   onPressed: () {
-                    deleteUser(filteredData[index].id);
+                    deleteUser(filteredData[index].userId);
                   },
                 ),
               );
