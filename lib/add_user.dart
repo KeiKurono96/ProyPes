@@ -32,17 +32,20 @@ class _AddUserState extends State<AddUser> {
       );
 
       await apiHandler.addUser(user: user);
-    }
 
-    if (!mounted) return;
+      if (!mounted) return;
     Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('El formulario no es válido')));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add User"),
+        title: const Text("Crear Nuevo Usuario"),
         centerTitle: true,
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
@@ -52,27 +55,31 @@ class _AddUserState extends State<AddUser> {
         textColor: Colors.white,
         padding: const EdgeInsets.all(10),
         onPressed: addUser,
-        child: const Text('Add'),
+        child: const Text('Agregar Usuario'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: FormBuilder(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               FormBuilderTextField(
                 name: 'email',
                 decoration: const InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.email(errorText: 'Este correo no es válido'), 
+                    FormBuilderValidators.required()]
                 ),
               ),
               const SizedBox(height: 10,),
               FormBuilderTextField(
                 name: 'password',
+                obscureText: true,
                 decoration: const InputDecoration(labelText: 'Password'),
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
                 ),
               ),
               const SizedBox(height: 10,),
@@ -80,7 +87,7 @@ class _AddUserState extends State<AddUser> {
                 name: 'nombres',
                 decoration: const InputDecoration(labelText: 'Nombres'),
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
                 ),
               ),
               const SizedBox(height: 10,),
@@ -88,40 +95,67 @@ class _AddUserState extends State<AddUser> {
                 name: 'apellidos',
                 decoration: const InputDecoration(labelText: 'Apellidos'),
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
                 ),
               ),
               const SizedBox(height: 10,),
-              FormBuilderTextField(
+              FormBuilderRadioGroup(
                 name: 'sexo',
                 decoration: const InputDecoration(labelText: 'Sexo'),
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
                 ),
+                options: const [
+                  FormBuilderFieldOption(
+                    value: 'f',
+                    child: Text('Femenino'),
+                  ),
+                  FormBuilderFieldOption(
+                    value: 'm',
+                    child: Text('Masculino'),
+                  ),
+                ],
+              ),              
+              const SizedBox(height: 10,),
+              FormBuilderDropdown<String>(
+                name: 'tipo',
+                decoration: InputDecoration(
+                  labelText: 'Tipo',
+                  suffix: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      _formKey.currentState!.fields['tipo']
+                          ?.reset();
+                    },
+                  ),
+                ),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'apo',
+                    child: Text('Apoderado'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'doc',
+                    child: Text('Docente'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'adm',
+                    child: Text('Administrador'),
+                  ),
+                ],
               ),
               const SizedBox(height: 10,),
               FormBuilderTextField(
                 name: 'direccion',
                 decoration: const InputDecoration(labelText: 'Direccion'),
-                validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
-                ),
               ),
               const SizedBox(height: 10,),
               FormBuilderTextField(
                 name: 'telefono',
                 decoration: const InputDecoration(labelText: 'Telefono'),
-                validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
-                ),
-              ),
-              const SizedBox(height: 10,),
-              FormBuilderTextField(
-                name: 'tipo',
-                decoration: const InputDecoration(labelText: 'Tipo'),
-                validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
-                ),
               ),
             ],
           ),

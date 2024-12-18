@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/api_handler.dart';
-import 'package:flutter_application_2/main_page.dart';
+import 'package:flutter_application_2/admin_page.dart';
 import 'package:flutter_application_2/model.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_application_2/parents_page.dart';
+import 'package:flutter_application_2/teachers_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
   ApiHandler apiHandler = ApiHandler();
   late List<User> data = [];
   var txtEmail = TextEditingController();
@@ -81,12 +82,12 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 30),
                         Container(
                           child: Form(
+                            key: _formKey,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             child: Column(
                               children: [
                                 TextFormField(
-                                  key: _formKey,
                                   keyboardType: TextInputType.emailAddress,
                                   autocorrect: false,
                                   controller: txtEmail,
@@ -151,23 +152,40 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    if (_formKey.currentState!.saveAndValidate()) {
-                                      if (data.where((e) => e.email == txtEmail.text && e.password == txtPassword.text).isNotEmpty) 
+                                    // if (_formKey.currentState!.validate()){
+                                      if (data.where((e) => e.email == txtEmail.text && e.password == txtPassword.text && e.tipo == 'adm').isNotEmpty) 
                                       {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const MainPage()),
+                                                  const AdminPage()),
                                         );
-                                      } else {
+                                      } else if (data.where((e) => e.email == txtEmail.text && e.password == txtPassword.text && e.tipo == 'doc').isNotEmpty)
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const TeachersPage()),
+                                        );
+                                      } else if (data.where((e) => e.email == txtEmail.text && e.password == txtPassword.text && e.tipo == 'apo').isNotEmpty)
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ParentsPage()),
+                                        );
+                                      } else
+                                      {
                                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                           content: Text('No existe ese usuario')));
                                       }
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                          content: Text('Datos inválidos')));
-                                    }
+                                    // } else {
+                                    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    //       content: Text('Los datos no son válidos, revísalos')));
+                                    // }
                                   },
                                 )
                               ],

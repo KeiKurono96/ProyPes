@@ -8,8 +8,6 @@ class User{
   final String? direccion;
   final String? telefono;
   final String tipo;
-  final DateTime? fechaCreacion;
-  final DateTime? fechaModificacion;
 
   const User ({
     required this.userId,
@@ -21,8 +19,6 @@ class User{
     this.direccion,
     this.telefono,
     required this.tipo,
-    this.fechaCreacion,
-    this.fechaModificacion,
   });
 
   const User.empty({
@@ -35,8 +31,6 @@ class User{
     this.direccion,
     this.telefono,
     this.tipo = 'doc',
-    this.fechaCreacion,
-    this.fechaModificacion
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(

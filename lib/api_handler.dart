@@ -71,7 +71,7 @@ class ApiHandler{
         body: json.encode(user),
       );
     }catch(e){
-      return response;
+      print(e);
     }
     return response;
   }

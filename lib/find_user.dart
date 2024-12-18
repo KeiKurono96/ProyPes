@@ -43,7 +43,7 @@ class _FindUserState extends State<FindUser> {
                   content: Text('Ese usuario no existe')));
             }
           },
-          child: const Text('Find'),
+          child: const Text('Buscar Usuario'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),

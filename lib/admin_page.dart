@@ -5,14 +5,14 @@ import 'package:flutter_application_2/edit_page.dart';
 import 'package:flutter_application_2/find_user.dart';
 import 'package:flutter_application_2/model.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class AdminPage extends StatefulWidget {
+  const AdminPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _AdminPageState extends State<AdminPage> {
   ApiHandler apiHandler = ApiHandler();
   late List<User> data = [];
   late List<User> filteredData = [];
@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CalificacionesAJS"),
+        title: const Text("MODO ADMINISTRADOR"),
         centerTitle: true,
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
@@ -129,6 +129,7 @@ class _MainPageState extends State<MainPage> {
             ]            
           ),          
           ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: filteredData.length,
             itemBuilder: (BuildContext context, int index) {

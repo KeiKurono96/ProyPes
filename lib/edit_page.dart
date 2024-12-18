@@ -35,16 +35,17 @@ class _EditPageState extends State<EditPage> {
       );
       
       response = await apiHandler.updateUser(id: widget.user.userId, user: user);
+
+      if(!mounted) return;
+      Navigator.pop(context);
     }
-    if(!mounted) return;
-    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Page"),
+        title: const Text("Modificar Usuario"),
         centerTitle: true,
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
@@ -54,7 +55,7 @@ class _EditPageState extends State<EditPage> {
         textColor: Colors.white,
         padding: const EdgeInsets.all(10),
         onPressed: updateData,
-        child: const Text('Update'),
+        child: const Text('Modificar'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -62,25 +63,110 @@ class _EditPageState extends State<EditPage> {
           key: _formKey,
           initialValue: {
             'email' : widget.user.email,
-            'password' : widget.user.password
+            'password' : widget.user.password,
+            "nombres": widget.user.nombres,
+            "apellidos": widget.user.apellidos,
+            "sexo": widget.user.sexo,
+            "direccion": widget.user.direccion,
+            "telefono": widget.user.telefono,
+            "tipo": widget.user.tipo,
           },
-          child: Column(
+          child: ListView(
             children: [
               FormBuilderTextField(
                 name: 'email',
                 decoration: const InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.email(errorText: 'Este correo no es válido'), 
+                    FormBuilderValidators.required()]
                 ),
               ),
               const SizedBox(height: 10,),
               FormBuilderTextField(
                 name: 'password',
                 decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
                 validator: FormBuilderValidators.compose(
-                  [FormBuilderValidators.required()]
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
                 ),
-              )
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'nombres',
+                decoration: const InputDecoration(labelText: 'Nombres'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'apellidos',
+                decoration: const InputDecoration(labelText: 'Apellidos'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
+                ),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderRadioGroup(
+                name: 'sexo',
+                decoration: const InputDecoration(labelText: 'Sexo'),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
+                ),
+                options: const [
+                  FormBuilderFieldOption(
+                    value: 'f',
+                    child: Text('Femenino'),
+                  ),
+                  FormBuilderFieldOption(
+                    value: 'm',
+                    child: Text('Masculino'),
+                  ),
+                ],
+              ),              
+              const SizedBox(height: 10,),
+              FormBuilderDropdown<String>(
+                name: 'tipo',
+                decoration: InputDecoration(
+                  labelText: 'Tipo',
+                  suffix: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      _formKey.currentState!.fields['tipo']
+                          ?.reset();
+                    },
+                  ),
+                ),
+                validator: FormBuilderValidators.compose(
+                  [FormBuilderValidators.required(errorText: 'Este campo no puede estar vacío')]
+                ),
+                items: const [
+                  DropdownMenuItem(
+                    value: 'apo',
+                    child: Text('Apoderado'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'doc',
+                    child: Text('Docente'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'adm',
+                    child: Text('Administrador'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'direccion',
+                decoration: const InputDecoration(labelText: 'Direccion'),
+              ),
+              const SizedBox(height: 10,),
+              FormBuilderTextField(
+                name: 'telefono',
+                decoration: const InputDecoration(labelText: 'Telefono'),
+              ),
             ],
           ),
         )
