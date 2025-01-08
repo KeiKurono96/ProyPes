@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBJu5I1MskPCzxxAS3y2eFU_IXGfdJ73SA',
-    appId: '1:920476433685:android:f45ec93aca37e58f24fd1c',
+    appId: '1:920476433685:android:6fb10d3597fa55cf24fd1c',
     messagingSenderId: '920476433685',
     projectId: 'ajsmensajes',
     storageBucket: 'ajsmensajes.firebasestorage.app',
