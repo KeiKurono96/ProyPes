@@ -138,13 +138,26 @@ class StorageService with ChangeNotifier {
     }
   }
 
-  // Create Collection of Reports by Admin
+  // Create Citations by Admin
   Future<void> createCitation(String title, String text, String targetRole) async {
     final currentUser = _authService.getCurrentUser();
     await _firestore.collection('Citations').add({
       'title': title,
       'text': text,
       'targetRole': targetRole,
+      'createdAt': FieldValue.serverTimestamp(),
+      'createdBy': currentUser!.uid,
+      'isArchived': false,
+    });
+  }
+
+  // Create Citations by Teacher
+  Future<void> createTeacherCitation(String title, String text, String targetClass) async {
+    final currentUser = _authService.getCurrentUser();
+    await _firestore.collection('TCitations').add({
+      'title': title,
+      'text': text,
+      'targetClass': targetClass,
       'createdAt': FieldValue.serverTimestamp(),
       'createdBy': currentUser!.uid,
       'isArchived': false,
@@ -161,5 +174,111 @@ class StorageService with ChangeNotifier {
       .orderBy('createdAt', descending: true)
       .snapshots();
     return citationsSnapshot;
+  }
+
+  // Get Classroom Citations for Parent
+  Stream<QuerySnapshot> getClassroomCitations(List<dynamic> aulas) {
+    final citationsRef = _firestore.collection('TCitations');
+    
+    final citationsSnapshot = citationsRef
+      .where('targetClass', whereIn: aulas)
+      .where('isArchived', isEqualTo: false)
+      .orderBy('createdAt', descending: true)
+      .snapshots();
+    return citationsSnapshot;
+  }
+
+  // Get Incidences for CurrentUser
+  Stream<QuerySnapshot> getIncidences(String userId){
+    return _firestore
+      .collection("Users")
+      .doc(userId)
+      .collection("Incidences")
+      .orderBy("timestamp", descending: true)
+      .snapshots();
+  }
+
+  // Get Grades for CurrentUser
+  Stream<QuerySnapshot> getGrades(String userId){
+    return _firestore
+      .collection("Users")
+      .doc(userId)
+      .collection("StudentGrades")
+      .orderBy("timestamp", descending: true)
+      .snapshots();
+  }
+
+  // Get Homework for CurrentUser
+  Stream<QuerySnapshot> getHomework(String userId, List<dynamic>? aulas){
+    if (aulas == null) {
+      return _firestore
+      .collection("Homework")
+      .orderBy("timestamp", descending: true)
+      .snapshots();
+    } else {
+      return _firestore
+      .collection("Homework")
+      .where('aula', whereIn: aulas)
+      .orderBy("timestamp", descending: true)
+      .snapshots();
+    }
+  }
+
+  // Get Classrooms Stream
+  Stream<List<Map<String,dynamic>>> getClassroomsStream() {
+    return _firestore.collection("Classrooms").orderBy("name").snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        final docId = doc.id;
+
+        // Combine data and document ID as needed
+        final combinedData = {
+          ...data, // Spread existing data
+          'docId': docId, // Add document ID
+        };
+        return combinedData;
+      }).toList();
+    });
+  }
+
+  // Get Classrooms for User
+  Future<List<dynamic>> getUserClassrooms() async {
+    final userId = _authService.getCurrentUser()!.uid;
+    DocumentSnapshot<Map<String, dynamic>> snapshot = 
+      await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+    
+    if (snapshot.exists) {
+      return snapshot.data()!['aulas'];
+    } else {
+      return []; 
+    }
+  }
+
+  // Get String Classrooms for User
+  Future<List<String>> getUserStringClassrooms() async {
+    final userId = _authService.getCurrentUser()!.uid;
+    DocumentSnapshot<Map<String, dynamic>> snapshot = 
+      await FirebaseFirestore.instance.collection('Users').doc(userId).get();
+    
+    if (snapshot.exists) {
+      return (snapshot.data()!['aulas'] as List<dynamic>).cast<String>();
+    } else {
+      return ['']; 
+    }
+  }
+
+  // Delete Classroom
+  Future<void> deleteClassroom(String docId) async {
+    await _firestore.collection("Classrooms").doc(docId).delete();
+  }
+
+  // Add Classroom
+  Future<void> createClassroom(String name) async {
+    final currentUser = _authService.getCurrentUser();
+    await _firestore.collection('Classrooms').add({
+      'name': name,
+      'createdAt': FieldValue.serverTimestamp(),
+      'createdBy': currentUser!.uid,
+    });
   }
 }

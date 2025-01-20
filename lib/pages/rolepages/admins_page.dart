@@ -3,8 +3,9 @@ import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/my_drawer.dart';
 import 'package:prueba_chat/components/my_menu.dart';
 import 'package:prueba_chat/pages/chatlist_page.dart';
+import 'package:prueba_chat/pages/classrooms_page.dart';
 import 'package:prueba_chat/pages/rolepages/list_users_page.dart';
-import 'package:prueba_chat/pages/rolepages/new_admin_page.dart';
+import 'package:prueba_chat/pages/rolepages/create_user_page.dart';
 import 'package:prueba_chat/pages/send_citations_page.dart';
 
 class AdminsPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _AdminsPageState extends State<AdminsPage> {
       body: ListView(
         children: [                    
           MyMenu(
-            text: "Ir al Modo Chateo",
+            text: "Chat General",
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -32,16 +33,16 @@ class _AdminsPageState extends State<AdminsPage> {
             ),
           )     ,  
           MyMenu(
-            text: "Ir a Creación de Usuarios",
+            text: "Creación de Usuarios",
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const NewAdminPage()
+                builder: (context) => const CreateUserPage()
               )
             ),
           ),
           MyMenu(
-            text: 'Ir a Edición de Usuarios',
+            text: 'Edición de Usuarios',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -50,11 +51,20 @@ class _AdminsPageState extends State<AdminsPage> {
             ),
           ),
           MyMenu(
-            text: 'Ir a Envío de Citaciones',
+            text: 'Enviar Citaciones',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const SendCitationsPage()
+              )
+            ),
+          ),
+          MyMenu(
+            text: 'Aulas 2025',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ClassroomsPage()
               )
             ),
           ),

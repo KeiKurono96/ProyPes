@@ -91,7 +91,7 @@ class AuthService {
   }
 
   // Sign Up
-  Future<UserCredential> signUpWithEP(String email, password, tipo) async {
+  Future<UserCredential> signUpWithEP(String email, String password, String tipo, List<String> aulas) async {
     try{
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -103,6 +103,7 @@ class AuthService {
         'uid': userCredential.user!.uid,
         'email': email,
         'tipo': tipo,
+        'aulas': aulas,
       });
 
       // Save Device Token
@@ -168,7 +169,22 @@ class AuthService {
   //  on FirebaseFunctionsException catch (e) {
   //   // print('Error: ${e.message}');
   // }
-}
+  }
+
+  // Update User password (For Admins Only)
+  Future<void> changeUserPassword(String uid, String newPassword) async {
+  // try {
+    final functions = FirebaseFunctions.instance;
+    await functions.httpsCallable('updateUserPassword').call({
+      'uid': uid,
+      'newPassword': newPassword,
+    });
+    // print(result.data); // Handle the result
+  // } catch(e){}
+  //  on FirebaseFunctionsException catch (e) {
+  //   // print('Error: ${e.message}');
+  // }
+  }
 
   // Update other User fields (For Admins)
   Future<void> updateUser(String uid, String tipo) async {

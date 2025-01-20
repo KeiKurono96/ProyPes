@@ -130,35 +130,35 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.inversePrimary,
-              borderRadius: BorderRadius.circular(12)
-            ),
-            margin: const EdgeInsets.only(top: 40, right: 30, left: 30),
-            padding: const EdgeInsets.only(top: 15, right: 40, left: 30, bottom: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Borrar Cuenta",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.tertiary
-                  ),
-                ),
-                IconButton(
-                  iconSize: 30,
-                  onPressed: () => userDeletesAccount(context),
-                  icon: Icon(
-                    Icons.dangerous_outlined,
-                    color: Theme.of(context).colorScheme.primary,
-                  )
-                )
-              ],
-            ),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     color: Theme.of(context).colorScheme.inversePrimary,
+          //     borderRadius: BorderRadius.circular(12)
+          //   ),
+          //   margin: const EdgeInsets.only(top: 40, right: 30, left: 30),
+          //   padding: const EdgeInsets.only(top: 15, right: 40, left: 30, bottom: 15),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text(
+          //         "Borrar Cuenta",
+          //         style: TextStyle(
+          //           fontWeight: FontWeight.w700,
+          //           fontSize: 16,
+          //           color: Theme.of(context).colorScheme.tertiary
+          //         ),
+          //       ),
+          //       IconButton(
+          //         iconSize: 30,
+          //         onPressed: () => userDeletesAccount(context),
+          //         icon: Icon(
+          //           Icons.dangerous_outlined,
+          //           color: Theme.of(context).colorScheme.primary,
+          //         )
+          //       )
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:prueba_chat/components/my_appbar.dart';
+import 'package:prueba_chat/components/my_button.dart';
 import 'package:prueba_chat/components/my_formtextfield.dart';
+import 'package:prueba_chat/pages/rolepages/edit_classrooms_page.dart';
+import 'package:prueba_chat/pages/rolepages/edit_password_page.dart';
 import 'package:prueba_chat/services/auth/auth_service.dart';
 
 class EditUserPage extends StatefulWidget {
   final String id;
   final String email;
   final String role;
+  final List<dynamic>? aulas;
 
   const EditUserPage({
     super.key, 
     required this.id, 
     required this.email, 
-    required this.role
+    required this.role, 
+    this.aulas,
   });
 
   @override
@@ -152,7 +157,7 @@ class _EditUserPageState extends State<EditUserPage> {
           initialValue: {
             'id' : widget.id,
             'email' : widget.email,
-            "tipo": widget.role,
+            'tipo': widget.role,
           },
           child: ListView(
             children: [
@@ -216,6 +221,18 @@ class _EditUserPageState extends State<EditUserPage> {
                   ],
                 ),
               ),
+              SizedBox(height: 40,),
+              MyButton(text: "Editar Aulas", onTap: (){
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => EditClassroomsPage(uid: widget.id, email: widget.email, aulas: widget.aulas,),
+                ));
+              }),
+              SizedBox(height: 30,),
+              MyButton(text: "Editar Contraseña", onTap: (){
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => EditPasswordPage(uid: widget.id,),
+                ));
+              }),
             ],
           ),
         )

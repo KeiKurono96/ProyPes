@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_chat/pages/forgot_pass.dart';
+import 'package:prueba_chat/services/auth/forgot_pass.dart';
 import 'package:prueba_chat/services/auth/auth_service.dart';
 import 'package:prueba_chat/components/my_button.dart';
 import 'package:prueba_chat/components/my_textfield.dart';
 
 class LoginPage extends StatelessWidget {
+
+  // final void Function()? onTap;
+
+  LoginPage({super.key});
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
-
-  final void Function()? onTap;
-
-  LoginPage({super.key, required this.onTap});
 
   void login(BuildContext context) async {
     final authService = AuthService();
@@ -72,7 +73,7 @@ class LoginPage extends StatelessWidget {
               obscureText: true,
               hintText: "Contraseña",
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(height: 15,),
             Padding(
               padding: const EdgeInsets.only(right: 25),
               child: Align(
@@ -87,29 +88,29 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10,),          
+            const SizedBox(height: 15,),          
             MyButton(
               text: "Ingresar",
               onTap: ()=> login(context),
             ),
-            const SizedBox(height: 25,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("¿Aún no tiene una cuenta? ",
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                ),
-                GestureDetector(
-                  onTap: onTap,
-                  child: Text("Registrese",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // const SizedBox(height: 25,),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text("¿Aún no tiene una cuenta? ",
+            //       style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            //     ),
+            //     GestureDetector(
+            //       onTap: onTap,
+            //       child: Text("Registrese",
+            //         style: TextStyle(
+            //           color: Theme.of(context).colorScheme.primary,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

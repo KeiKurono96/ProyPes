@@ -30,9 +30,9 @@ class UserTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                buildIconItem(),
+                buildIconItem(Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 15,),
-                Text(text),
+                Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary),),
               ],
             ),
             unreadMessagesCount > 0 ? Padding(
@@ -58,16 +58,16 @@ class UserTile extends StatelessWidget {
     );
   }
 
-  Widget buildIconItem(){
+  Widget buildIconItem(Color iconColor){
     switch (role) {
       case 'Administrador':
-        return const Icon(Icons.admin_panel_settings);
+        return Icon(Icons.admin_panel_settings, color: iconColor);
       case 'Docente':
-        return const Icon(Icons.co_present_outlined);
+        return Icon(Icons.co_present_outlined, color: iconColor);
       case 'Apoderado':
-        return const Icon(Icons.person_4);
+        return Icon(Icons.person_4, color: iconColor);
       default:
-        return const Text('SIN ROL');
+        return Icon(Icons.not_interested_sharp, color: iconColor);
     }
   }
 }

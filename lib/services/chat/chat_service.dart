@@ -28,7 +28,56 @@ class ChatService{
       .snapshots()
       .asyncMap((snapshot) async {
         final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
-        final usersSnapshot = await _firestore.collection('Users').get();
+        final usersSnapshot = await _firestore.collection('Users')
+          .where('tipo', whereIn: ['Docente','Administrador'])
+          .get();
+
+        // REPLACING CODE BELOW
+        final usersData = await Future.wait(
+          usersSnapshot.docs
+            .where((doc) => 
+              doc.data()['email'] != currentUser.email &&            
+              !blockedUserIds.contains(doc.id))
+            .map((doc) async {
+              final userData = doc.data();
+              final chatRoomId = [currentUser.uid, doc.id]..sort();
+              final unreadMessagesSnapshot = await _firestore
+                .collection("chat_rooms")
+                .doc(chatRoomId.join('_'))
+                .collection("messages")
+                .where('receiverId', isEqualTo: currentUser.uid)
+                .where('isRead', isEqualTo: false)
+                .get();
+
+              userData['unreadCount'] = unreadMessagesSnapshot.docs.length;
+              return userData;
+            }).toList(),
+        );
+      return usersData;
+        // return usersSnapshot.docs
+        //   .where((doc) => 
+        //     doc.data()['email'] != currentUser.email &&            
+        //     !blockedUserIds.contains(doc.id))
+        //   .map((doc) => doc.data())
+        //   .toList();
+      });
+  }
+
+  // GET CLASSROOM USERS EXCEPT BLOCKED USERS (FOR PARENTS)
+  Stream<List<Map<String,dynamic>>> getClassroomUsersStreamExcludingBlocked(List<dynamic> aulas) {
+    final currentUser = _auth.currentUser;
+
+    return _firestore
+      .collection('Users')
+      .doc(currentUser!.uid)
+      .collection('BlockedUsers')
+      .snapshots()
+      .asyncMap((snapshot) async {
+        final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
+        final usersSnapshot = await _firestore.collection('Users')
+          .where('aulas', arrayContainsAny: aulas)
+          .where('tipo', isEqualTo: 'Docente')
+          .get();
 
         // REPLACING CODE BELOW
         final usersData = await Future.wait(

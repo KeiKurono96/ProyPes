@@ -121,7 +121,6 @@ class ChatBubble extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
 

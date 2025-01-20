@@ -4,14 +4,14 @@ import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/report_post.dart';
 import 'package:prueba_chat/services/storage/storage_service.dart';
 
-class ReportsPage extends StatefulWidget {
-  const ReportsPage({super.key});
+class ExcelReportsPage extends StatefulWidget {
+  const ExcelReportsPage({super.key});
 
   @override
-  State<ReportsPage> createState() => _ReportsPageState();
+  State<ExcelReportsPage> createState() => _ExcelReportsPageState();
 }
 
-class _ReportsPageState extends State<ReportsPage> {
+class _ExcelReportsPageState extends State<ExcelReportsPage> {
 
   @override
   void initState() {

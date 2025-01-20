@@ -1,49 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_chat/components/edit_user_tile.dart';
-import 'package:prueba_chat/components/my_drawer.dart';
-import 'package:prueba_chat/pages/rolepages/edit_user_page.dart';
+import 'package:prueba_chat/components/my_appbar.dart';
+import 'package:prueba_chat/components/user_tile.dart';
+import 'package:prueba_chat/pages/chat_page.dart';
 import 'package:prueba_chat/services/auth/auth_service.dart';
 import 'package:prueba_chat/services/chat/chat_service.dart';
 
-class ListUsersPage extends StatefulWidget {
-  const ListUsersPage({super.key});
+class ChatlistParentsPage extends StatefulWidget {
+  final List<dynamic> aulas;
+
+  const ChatlistParentsPage({super.key, required this.aulas});
 
   @override
-  State<ListUsersPage> createState() => _ListUsersPageState();
+  State<ChatlistParentsPage> createState() => _ChatlistParentsPageState();
 }
 
-class _ListUsersPageState extends State<ListUsersPage> {
+class _ChatlistParentsPageState extends State<ChatlistParentsPage> {
   final ChatService chatService = ChatService();
   final AuthService authService = AuthService();
-
-  void goBack(){
-    Navigator.pop(context);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(      
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.primary,
-        elevation: 0,
-        title: const Text("Lista de Usuarios"),
-        centerTitle: true,
-        actions: [IconButton(
-          onPressed: goBack, 
-          icon: const Icon(Icons.backspace_rounded)
-          ),
-          const SizedBox(width: 20,)
-        ]
-      ),
-      drawer: const MyDrawer(),
+      appBar: MyAppbar(title: "Chats Disponibles"),
       body: buildUserList(),
     );
   }
 
   Widget buildUserList(){
     return StreamBuilder(
-      stream: chatService.getUsersStream(), 
+      stream: chatService.getClassroomUsersStreamExcludingBlocked(widget.aulas), 
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text("Error..");
@@ -64,20 +49,22 @@ class _ListUsersPageState extends State<ListUsersPage> {
 
   Widget buildUserListItem(Map<String, dynamic> userData, BuildContext context){
     if (userData["email"] != authService.getCurrentUser()!.email) {
-      return EditUserTile(
+      return UserTile(
+        unreadMessagesCount: userData['unreadCount'],
         text: userData["email"],
         role: userData["tipo"],
-        onTap: () {
-          // say uid in snackbar
+        onTap: () async {
+          // Mark All Messages As Read
+          await chatService.markMessagesAsRead(userData['uid']);
+          
+          // Go to Chat Page
           if(context.mounted){
             Navigator.push(context, MaterialPageRoute(
-              builder: (context) => EditUserPage(
-                id: userData["uid"],
-                email: userData["email"],
-                role: userData["tipo"],
-                aulas: userData["aulas"],
-              ),
-            )).then((_) => setState(() {userData['unreadCount'];}));
+            builder: (context) => ChatPage(
+              recieverEmail: userData["email"],
+              receiverId: userData["uid"],
+            ),
+          )).then((_) => setState(() {userData['unreadCount'];}));
           }
         },
       );

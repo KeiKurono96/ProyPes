@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class EditUserTile extends StatelessWidget {
   final String text;
-  final String text2;
+  final String role;
   final void Function()? onTap;
 
   const EditUserTile({
     super.key, 
     required this.text,
-    required this.text2, 
+    required this.role, 
     required this.onTap,
   });
 
@@ -25,25 +25,25 @@ class EditUserTile extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            buildIconItem(),
+            buildIconItem(Theme.of(context).colorScheme.primary),
             const SizedBox(width: 15,),
-            Text(text),
+            Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary),),
           ],
         ),
       ),
     );
   }
 
-  Widget buildIconItem(){
-    switch (text2) {
+  Widget buildIconItem(Color iconColor){
+    switch (role) {
       case 'Administrador':
-        return const Icon(Icons.admin_panel_settings);
+        return Icon(Icons.admin_panel_settings, color: iconColor);
       case 'Docente':
-        return const Icon(Icons.co_present_outlined);
+        return Icon(Icons.co_present_outlined, color: iconColor);
       case 'Apoderado':
-        return const Icon(Icons.person_4);
+        return Icon(Icons.person_4, color: iconColor);
       default:
-        return const Text('SIN ROL');
+        return Icon(Icons.not_interested_sharp, color: iconColor);
     }
   }
 }

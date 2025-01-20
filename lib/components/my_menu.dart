@@ -12,35 +12,25 @@ class MyMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: BorderRadius.circular(12)
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.primary
-              ),
-            ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(12)
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+        child: Text(          
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 16,
+            color: Theme.of(context).colorScheme.primary
           ),
-          IconButton(
-            iconSize: 30,
-            onPressed: onPressed,
-            icon: Icon(
-              Icons.arrow_forward_rounded,
-              color: Theme.of(context).colorScheme.primary,
-            )
-          )
-        ],
+        ),
       ),
     );
   }

@@ -46,26 +46,104 @@ class NotificationService {
   void navigateToCitations(){
     navigatorKey.currentState!.pushNamed('/citationsPage');
   }
+ 
+  // Navigate to Grades
+  void navigateToGrades(){
+    navigatorKey.currentState!.pushNamed('/gradesPage');
+  }
+
+  // Navigate to Teacher Citations
+  void navigateToTeacherCitations(){
+    navigatorKey.currentState!.pushNamed('/authGate');
+  }
+
+  // Navigate to ExcelReports
+  void navigateToExcelReports(){
+    navigatorKey.currentState!.pushNamed('/incidencesPage');
+  }
 
   // SETUP INTERACTIONS
   void setupInteractions(){
     // User received message
     FirebaseMessaging.onMessage.listen((event){
-      // print('Got a message whilst in the foreground');
-      // print('Message data: ${event.data}');
-      final SnackBar snackBar = SnackBar(
-        content: const Text("Se ha añadido una nueva citación, por favor revisa el menú de citaciones"),
-        action: SnackBarAction(
-          label: "Ir a Citaciones", 
-          onPressed: navigateToCitations),
-      );
-      snackbarKey.currentState?.showSnackBar(snackBar);
+      // Extract the data from the notification 
+      Map<String, dynamic>? data = event.data;
+      // Check the notification origin
+      String? notificationType = data['notificationType']; 
+
+      switch (notificationType) {
+        case 'Citations':
+          final SnackBar snackBar = SnackBar(
+            content: const Text("Se ha añadido una nueva citación global, por favor revisa el menú de citaciones"),
+            action: SnackBarAction(
+              label: "Ir a Citaciones", 
+              onPressed: navigateToCitations),
+          );
+          snackbarKey.currentState?.showSnackBar(snackBar);
+          break;
+        case 'TCitations':
+          final SnackBar snackBar = SnackBar(
+            content: const Text("Se ha añadido una nueva citación de aula, por favor revisa el menú de citaciones de aula"),
+            action: SnackBarAction(
+              label: "Ir al menú principal", 
+              onPressed: navigateToTeacherCitations),
+          );
+          snackbarKey.currentState?.showSnackBar(snackBar);
+          break;
+        case 'Grades':
+          final SnackBar snackBar = SnackBar(
+            content: const Text("Se ha añadido una nueva calificación, por favor revisa el menú de calificaciones"),
+            action: SnackBarAction(
+              label: "Ir a Calificaciones", 
+              onPressed: navigateToGrades),
+          );
+          snackbarKey.currentState?.showSnackBar(snackBar);
+          break;
+        case 'Incidences':
+          final SnackBar snackBar = SnackBar(
+            content: const Text("Se ha añadido un nuevo reporte de tu hijo, por favor revisa el menú de reportes"),
+            action: SnackBarAction(
+              label: "Ir a Incidencias", 
+              onPressed: navigateToExcelReports),
+          );
+          snackbarKey.currentState?.showSnackBar(snackBar);
+          break;
+        case 'Homework':
+          final SnackBar snackBar = SnackBar(
+            content: const Text("Se ha añadido una nueva tarea, por favor revisa el menú de tareas"),
+            action: SnackBarAction(
+              label: "Ir al menú principal", 
+              onPressed: navigateToTeacherCitations),
+          );
+          snackbarKey.currentState?.showSnackBar(snackBar);
+          break;
+      }
       _messageStreamController.sink.add(event);
     });
     // User opened message
     FirebaseMessaging.onMessageOpenedApp.listen((event){
-      // print('Message clicked');      
-      navigateToCitations();
+      // Extract the data from the notification 
+      Map<String, dynamic>? data = event.data;
+      // Check the notification origin
+      String? notificationType = data['notificationType']; 
+
+      switch (notificationType){
+        case 'Citations':
+          navigateToCitations(); 
+          break;
+        case 'TCitations':
+          navigateToTeacherCitations(); 
+          break;
+        case 'Grades':
+          navigateToGrades(); 
+          break;
+        case 'Incidences':
+          navigateToExcelReports(); 
+          break;
+        case 'Homework':
+          navigateToTeacherCitations(); 
+          break;
+      }
     });
   }
 

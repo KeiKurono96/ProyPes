@@ -19,7 +19,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   List<String> items = ['Apoderado', 'Docente',];
 
-  String? selectedItem = 'Apoderado';
+  String selectedItem = 'Apoderado';
+
+  List<String> aulas = [];
 
   void register(BuildContext context) async {
     final auth = AuthService();
@@ -30,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
           _emailController.text, 
           _pwController.text,
           selectedItem,
+          aulas
         ); 
         if (!context.mounted) return;
       } catch (e){
@@ -115,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).colorScheme.inversePrimary,
                       ),),
                     )).toList(),
-                  onChanged: (item) => setState(() => selectedItem = item),
+                  onChanged: (item) => setState(() => selectedItem = item!),
                 ),
               ],
             ),

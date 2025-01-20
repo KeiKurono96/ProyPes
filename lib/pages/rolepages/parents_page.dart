@@ -3,10 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/my_drawer.dart';
 import 'package:prueba_chat/components/my_menu.dart';
-import 'package:prueba_chat/pages/chatlist_page.dart';
+import 'package:prueba_chat/pages/chatlist_parents_page.dart';
 import 'package:prueba_chat/pages/citations_page.dart';
-import 'package:prueba_chat/pages/reports_page.dart';
+import 'package:prueba_chat/pages/grades_page.dart';
+import 'package:prueba_chat/pages/homework_page.dart';
+import 'package:prueba_chat/pages/incidences_page.dart';
+import 'package:prueba_chat/pages/rolepages/teacher_citations_page.dart';
 import 'package:prueba_chat/services/auth/role_provider.dart';
+import 'package:prueba_chat/services/storage/storage_service.dart';
 
 class ParentsPage extends StatelessWidget {
   const ParentsPage({super.key});
@@ -14,34 +18,75 @@ class ParentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {    
     final userRole = Provider.of<UserRoleProvider>(context).role!;
+    final StorageService storageService = StorageService();
+    List<dynamic> userClassrooms = [];
     
     return Scaffold(
       appBar: const MyAppbar(title: "MODO APODERADO"),
       drawer: const MyDrawer(),
-      body: Column(
+      body: ListView(
         children: [ 
           MyMenu(
-            text: "Ir al Modo Chateo",
-            onPressed: () => 
+            text: "Chat Aulas",
+            onPressed: () async {
+              userClassrooms = await storageService.getUserClassrooms();
+              if(!context.mounted) return;
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ChatlistPage()
+                  builder: (context) => ChatlistParentsPage(aulas: userClassrooms,)
                 )
-              ),
-          ),
+              );
+            }
+          ), 
           MyMenu(
-            text: "Ir a Seguimiento de Reportes",
+            text: "Seguimiento de Calificaciones",
             onPressed: () => 
               Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ReportsPage()
+                builder: (context) => GradesPage()
               )
             ),
           ),
           MyMenu(
-            text: "Ir a Seguimiento de Citaciones",
+            text: "Seguimiento de Incidencias",
+            onPressed: () => 
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => IncidencesPage()
+              )
+            ),
+          ),
+          MyMenu(
+            text: "Seguimiento de Tareas",
+            onPressed: () async {
+              userClassrooms = await storageService.getUserClassrooms();
+              if(!context.mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeworkPage(aulas: userClassrooms,)
+                )
+              );
+            }
+          ),
+          MyMenu(
+            text: "Citaciones de Aula",
+            onPressed: () async {
+              userClassrooms = await storageService.getUserClassrooms();
+              if(!context.mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TeacherCitationsPage(aulas: userClassrooms,)
+                )
+              );
+            }
+          ),
+          MyMenu(
+            text: "Citaciones de I.E.",
             onPressed: () => 
               Navigator.push(
               context,

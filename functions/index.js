@@ -2,7 +2,7 @@ const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-// Send notification to corresponding users when a new citation is created
+// Send notification to corresponding users when a new admin citation is created
 exports.sendRoleBasedNotifications = functions.firestore
   .document('Citations/{citationId}')
   .onCreate(async (snapshot, context) => {
@@ -28,9 +28,12 @@ exports.sendRoleBasedNotifications = functions.firestore
       const message = {
         notification: {
           title: citation.title,
-          body: citation.message,
+          body: citation.text,
         },
         tokens: tokens,
+        data: {
+          notificationType: 'Citations'
+        }
       };
 
       try {
@@ -39,6 +42,180 @@ exports.sendRoleBasedNotifications = functions.firestore
       } catch (error) {
         console.error('Error sending notifications:', error);
       }
+    }
+});
+
+// Send notification to corresponding users when a new teacher citation is created
+exports.sendClassroomBasedNotifications = functions.firestore
+  .document('TCitations/{tcitationId}')
+  .onCreate(async (snapshot, context) => {
+    const tcitation = snapshot.data();
+    const targetClass = tcitation.targetClass;
+
+    // Get all users with the target role
+    const usersSnapshot = await admin.firestore()
+      .collection('Users')
+      .where('tipo', '==', 'Apoderado')
+      .where('aulas', 'array-contains', targetClass)
+      .get();
+
+    const tokens = [];
+    usersSnapshot.forEach(doc => {
+      const userData = doc.data();
+      if (userData.fcmToken) {
+        tokens.push(userData.fcmToken);
+      }
+    });
+
+    // Send notifications to all tokens
+    if (tokens.length > 0) {
+      const message = {
+        notification: {
+          title: tcitation.title,
+          body: tcitation.text,
+        },
+        tokens: tokens,
+        data: {
+          notificationType: 'TCitations'
+        }
+      };
+
+      try {
+        const response = await admin.messaging().sendEachForMulticast(message);
+        console.log(`${response.successCount} notifications sent successfully`);
+      } catch (error) {
+        console.error('Error sending notifications:', error);
+      }
+    }
+});
+
+// Send notification to corresponding user when a new Incidence is created
+exports.sendIncidenceBasedNotifications = functions.firestore
+  .document('Users/{userId}/Incidences/{incidenceId}')
+  .onCreate(async (snapshot, context) => {
+    const incidence = snapshot.data();
+
+    const userId = context.params.userId;
+    const receiverDoc = await admin.firestore().collection('Users')
+      .doc(userId).get();
+
+    const receiverData = receiverDoc.data();
+    const token = receiverData.fcmToken;
+
+    if(!token){
+        console.log('No token for user, cannot send notification');
+        return null;
+    }
+
+    // Send notification to the user
+    const messageSent = {
+      notification: {
+        title: incidence.alumno,
+        body: incidence.mensaje,
+      },
+      token: token,
+      data: {
+        notificationType: 'Incidences'
+      }
+    };
+
+    try {
+      const response = await admin.messaging().send(messageSent);
+      console.log('Notification sent successfully: ', response);
+    } catch (error) {
+      console.error('Detailed error:', error);
+      if(error.code && error.message) {
+          console.error('Error code:', error.code);
+          console.error('Error message:', error.message);
+      }
+      throw new Error('Failed to send notification');
+    }
+});
+
+// Send notification to corresponding users when a new Homework is created
+exports.sendHomeworkBasedNotifications = functions.firestore
+  .document('Homework/{homeworkId}')
+  .onCreate(async (snapshot, context) => {
+    const homework = snapshot.data();
+    const aula = homework.aula;
+
+    // Get all users with the target role
+    const usersSnapshot = await admin.firestore()
+      .collection('Users')
+      .where('tipo', '==', 'Apoderado')
+      .where('aulas', 'array-contains', aula)
+      .get();
+
+    const tokens = [];
+    usersSnapshot.forEach(doc => {
+      const userData = doc.data();
+      if (userData.fcmToken) {
+        tokens.push(userData.fcmToken);
+      }
+    });
+
+    // Send notifications to all tokens
+    if (tokens.length > 0) {
+      const message = {
+        notification: {
+          title: homework.aula,
+          body: homework.homework,
+        },
+        tokens: tokens,
+        data: {
+          notificationType: 'Homework'
+        }
+      };
+
+      try {
+        const response = await admin.messaging().sendEachForMulticast(message);
+        console.log(`${response.successCount} notifications sent successfully`);
+      } catch (error) {
+        console.error('Error sending notifications:', error);
+      }
+    }
+});
+
+// Send notification to corresponding user when a new Grade is created
+exports.sendGradeBasedNotifications = functions.firestore
+  .document('Users/{userId}/StudentGrades/{gradeId}')
+  .onCreate(async (snapshot, context) => {
+    const newGrade = snapshot.data();
+
+    const userId = context.params.userId;
+    const receiverDoc = await admin.firestore().collection('Users')
+      .doc(userId).get();
+
+    const receiverData = receiverDoc.data();
+    const token = receiverData.fcmToken;
+
+    if(!token){
+        console.log('No token for user, cannot send notification');
+        return null;
+    }
+
+    // Send notification to the user
+    const messageSent = {
+      notification: {
+        title: newGrade.alumno,
+        body: newGrade.curso,
+      },
+      token: token,
+      data: {
+        notificationType: 'Grades'
+      }
+    };
+
+    try {
+      const response = await admin.messaging().send(messageSent);
+      console.log('Notification sent successfully: ', response);
+    } catch (error) {
+      console.error('Detailed error:', error);
+      if(error.code && error.message) {
+          console.error('Error code:', error.code);
+          console.error('Error message:', error.message);
+      }
+      throw new Error('Failed to send notification');
     }
 });
 
@@ -137,6 +314,51 @@ exports.updateUserEmail = functions.https.onCall(async (data, context) => {
   }
 });
 
+// NO NOTIFICATION, Function to update another user's password (for admins)
+exports.updateUserPassword = functions.https.onCall(async (data, context) => {
+  const callerUid = context.auth?.uid;
+  if (!callerUid) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "User must be authenticated."
+    );
+  }
+
+  const uid = data.uid;
+  const newPassword = data.newPassword;
+
+  if (!uid) {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "UID to update must be provided."
+    );
+  }
+  if (!newPassword) {
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "Password to update must be provided."
+    );
+  }
+
+  try {
+    // 1. Fetch the caller's role
+    const callerDoc = await admin.firestore().collection("Users").doc(callerUid).get();
+    if (!callerDoc.exists || callerDoc.data().tipo !== "Administrador") {
+      throw new functions.https.HttpsError(
+        "permission-denied",
+        "Only admins can delete users."
+      );
+    }
+
+    // 2. Update the user's password using the Admin SDK
+    await admin.auth().updateUser(uid, { password: newPassword });
+    console.log('Password updated successfully');
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating password:', error);
+    throw new functions.https.HttpsError('internal', 'Password update failed');
+  }
+});
 
 // Send notification when a new message is created in our firestore
 // exports.sendNotificationOnMessage = functions.firestore

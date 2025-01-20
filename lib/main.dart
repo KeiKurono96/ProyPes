@@ -3,6 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:prueba_chat/pages/citations_page.dart';
+import 'package:prueba_chat/pages/grades_page.dart';
+import 'package:prueba_chat/pages/incidences_page.dart';
 import 'package:prueba_chat/services/auth/auth_gate.dart';
 import 'package:prueba_chat/firebase_options.dart';
 import 'package:prueba_chat/services/auth/role_provider.dart';
@@ -67,8 +69,10 @@ class MainApp extends StatelessWidget {
       theme: Provider.of<ThemeProvider>(context).themeData,
       // initialRoute: '/',
       routes: {
+        '/incidencesPage':(context) => IncidencesPage(),
         '/citationsPage':(context) => CitationsPage(userRole: roleProvider.role!),
-        // '/':(context) => const AuthGate(),
+        '/gradesPage':(context) => GradesPage(),
+        '/authGate':(context) => const AuthGate(),
       },
     );
   }

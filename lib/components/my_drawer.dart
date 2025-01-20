@@ -3,6 +3,7 @@ import 'package:prueba_chat/models/user.dart';
 import 'package:prueba_chat/pages/rolepages/profile_page.dart';
 import 'package:prueba_chat/services/auth/auth_service.dart';
 import 'package:prueba_chat/pages/settings_page.dart';
+import 'package:prueba_chat/services/auth/role_gate.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -51,7 +52,12 @@ class MyDrawer extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RoleGate(),
+                      ),
+                    );
                   },
                 ),
               ),
