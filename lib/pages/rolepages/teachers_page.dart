@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/my_drawer.dart';
 import 'package:prueba_chat/components/my_menu.dart';
-import 'package:prueba_chat/pages/chatlist_page.dart';
+import 'package:prueba_chat/pages/rolepages/chatlist_teachers_page.dart';
 import 'package:prueba_chat/pages/citations_page.dart';
 import 'package:prueba_chat/pages/rolepages/send_teacher_citations_page.dart';
 import 'package:prueba_chat/pages/send_grades_page.dart';
@@ -20,6 +20,7 @@ class TeachersPage extends StatelessWidget {
     final userRole = Provider.of<UserRoleProvider>(context).role!;
     StorageService storageService = StorageService();
     List<String> aulas;
+    List<dynamic> aulasDynamic;
     String primerAula;
     
     return Scaffold(
@@ -29,13 +30,16 @@ class TeachersPage extends StatelessWidget {
         children: [    
           MyMenu(
             text: "Chat General",
-            onPressed: () =>
+            onPressed: () async {
+              aulasDynamic = await storageService.getUserClassrooms();
+              if (!context.mounted) return;
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ChatlistPage()
+                  builder: (context) => ChatlistTeachersPage(aulas: aulasDynamic,)
                 )
-              ),
+              );
+            }
           ),     
           MyMenu(
             text: "Enviar Calificaciones",

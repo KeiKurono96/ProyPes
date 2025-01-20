@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/my_drawer.dart';
 import 'package:prueba_chat/components/my_menu.dart';
-import 'package:prueba_chat/pages/chatlist_page.dart';
+import 'package:prueba_chat/pages/rolepages/chatlist_admins_page.dart';
 import 'package:prueba_chat/pages/classrooms_page.dart';
 import 'package:prueba_chat/pages/rolepages/list_users_page.dart';
 import 'package:prueba_chat/pages/rolepages/create_user_page.dart';
@@ -28,7 +28,7 @@ class _AdminsPageState extends State<AdminsPage> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ChatlistPage()
+                builder: (context) => const ChatlistAdminsPage()
               )
             ),
           )     ,  

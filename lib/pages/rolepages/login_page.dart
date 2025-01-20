@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prueba_chat/services/auth/forgot_pass.dart';
 import 'package:prueba_chat/services/auth/auth_service.dart';
 import 'package:prueba_chat/components/my_button.dart';
 import 'package:prueba_chat/components/my_textfield.dart';
@@ -73,22 +72,22 @@ class LoginPage extends StatelessWidget {
               obscureText: true,
               hintText: "Contraseña",
             ),
-            const SizedBox(height: 15,),
-            Padding(
-              padding: const EdgeInsets.only(right: 25),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ForgotPass()));
-                  },
-                  child: Text("Olvide mi contraseña", style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary),),
-                ),
-              ),
-            ),
-            const SizedBox(height: 15,),          
+            const SizedBox(height: 25,),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 25),
+            //   child: Align(
+            //     alignment: Alignment.centerRight,
+            //     child: InkWell(
+            //       onTap: () {
+            //         Navigator.push(context, MaterialPageRoute(
+            //           builder: (context) => ForgotPass()));
+            //       },
+            //       child: Text("Olvide mi contraseña", style: TextStyle(
+            //         color: Theme.of(context).colorScheme.primary),),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 15,),          
             MyButton(
               text: "Ingresar",
               onTap: ()=> login(context),

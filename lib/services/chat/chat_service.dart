@@ -17,8 +17,8 @@ class ChatService{
     });
   }
 
-  // GET ALL USERS EXCEPT BLOCKED USERS
-  Stream<List<Map<String,dynamic>>> getUsersStreamExcludingBlocked() {
+  // GET ALL USERS EXCEPT BLOCKED USERS (FOR ADMINS)
+  Stream<List<Map<String,dynamic>>> getUsersStreamExcBloAdm() {
     final currentUser = _auth.currentUser;
 
     return _firestore
@@ -53,7 +53,11 @@ class ChatService{
               return userData;
             }).toList(),
         );
-      return usersData;
+
+        // Sort usersData by unreadCount in descending order
+        usersData.sort((a, b) => b['unreadCount'].compareTo(a['unreadCount']));
+        
+        return usersData;
         // return usersSnapshot.docs
         //   .where((doc) => 
         //     doc.data()['email'] != currentUser.email &&            
@@ -64,7 +68,7 @@ class ChatService{
   }
 
   // GET CLASSROOM USERS EXCEPT BLOCKED USERS (FOR PARENTS)
-  Stream<List<Map<String,dynamic>>> getClassroomUsersStreamExcludingBlocked(List<dynamic> aulas) {
+  Stream<List<Map<String,dynamic>>> getUsersStreamExcBloPar(List<dynamic> aulas) {
     final currentUser = _auth.currentUser;
 
     return _firestore
@@ -100,13 +104,68 @@ class ChatService{
               return userData;
             }).toList(),
         );
-      return usersData;
-        // return usersSnapshot.docs
-        //   .where((doc) => 
-        //     doc.data()['email'] != currentUser.email &&            
-        //     !blockedUserIds.contains(doc.id))
-        //   .map((doc) => doc.data())
-        //   .toList();
+
+        // Sort usersData by unreadCount in descending order
+        usersData.sort((a, b) => b['unreadCount'].compareTo(a['unreadCount']));
+
+        return usersData;
+      });
+  }
+
+  // GET CLASSROOM USERS EXCEPT BLOCKED USERS (FOR TEACHERS)
+  Stream<List<Map<String,dynamic>>> getUsersStreamExcBloTea(List<dynamic> aulas) {
+    final currentUser = _auth.currentUser;
+
+    return _firestore
+      .collection('Users')
+      .doc(currentUser!.uid)
+      .collection('BlockedUsers')
+      .snapshots()
+      .asyncMap((snapshot) async {
+        final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
+
+        // Query for Parents
+        final parentSnapshot = await _firestore
+            .collection('Users')
+            .where('aulas', arrayContainsAny: aulas)
+            .where('tipo', isEqualTo: 'Apoderado')
+            .get();
+
+        // Query for Admins and Teachers
+        final adminTeacherSnapshot = await _firestore
+            .collection('Users')
+            .where('tipo', whereIn: ['Administrador', 'Docente'])
+            .get();
+
+        // Combine results from both queries
+        final combinedDocs = [...parentSnapshot.docs, ...adminTeacherSnapshot.docs];
+
+        // REPLACING CODE BELOW
+        final usersData = await Future.wait(
+          combinedDocs
+            .where((doc) => 
+              doc.data()['email'] != currentUser.email &&            
+              !blockedUserIds.contains(doc.id))
+            .map((doc) async {
+              final userData = doc.data();
+              final chatRoomId = [currentUser.uid, doc.id]..sort();
+              final unreadMessagesSnapshot = await _firestore
+                .collection("chat_rooms")
+                .doc(chatRoomId.join('_'))
+                .collection("messages")
+                .where('receiverId', isEqualTo: currentUser.uid)
+                .where('isRead', isEqualTo: false)
+                .get();
+
+              userData['unreadCount'] = unreadMessagesSnapshot.docs.length;
+              return userData;
+            }).toList(),
+        );
+
+        // Sort usersData by unreadCount in descending order
+        usersData.sort((a, b) => b['unreadCount'].compareTo(a['unreadCount']));
+
+        return usersData;
       });
   }
 

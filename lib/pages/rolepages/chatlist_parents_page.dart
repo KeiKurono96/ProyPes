@@ -28,7 +28,7 @@ class _ChatlistParentsPageState extends State<ChatlistParentsPage> {
 
   Widget buildUserList(){
     return StreamBuilder(
-      stream: chatService.getClassroomUsersStreamExcludingBlocked(widget.aulas), 
+      stream: chatService.getUsersStreamExcBloPar(widget.aulas), 
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text("Error..");
@@ -51,8 +51,10 @@ class _ChatlistParentsPageState extends State<ChatlistParentsPage> {
     if (userData["email"] != authService.getCurrentUser()!.email) {
       return UserTile(
         unreadMessagesCount: userData['unreadCount'],
-        text: userData["email"],
+        email: userData["email"],
         role: userData["tipo"],
+        name: userData["nombres"],
+        lastname: userData["apellidos"],
         onTap: () async {
           // Mark All Messages As Read
           await chatService.markMessagesAsRead(userData['uid']);

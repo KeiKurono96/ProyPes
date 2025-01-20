@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/my_drawer.dart';
 import 'package:prueba_chat/components/my_menu.dart';
-import 'package:prueba_chat/pages/chatlist_parents_page.dart';
+import 'package:prueba_chat/pages/rolepages/chatlist_parents_page.dart';
 import 'package:prueba_chat/pages/citations_page.dart';
 import 'package:prueba_chat/pages/grades_page.dart';
 import 'package:prueba_chat/pages/homework_page.dart';

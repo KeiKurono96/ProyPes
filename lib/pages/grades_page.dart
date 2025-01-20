@@ -44,7 +44,6 @@ class GradesPage extends StatelessWidget {
               String curso = excelRep['curso'];
               String nota = excelRep['nota'];
               String observaciones = excelRep['observaciones'];
-              String subtitle = '$curso, $observaciones';
               Timestamp timestamp = excelRep['timestamp'];
               DateTime createdAt = timestamp.toDate();
 
@@ -60,13 +59,10 @@ class GradesPage extends StatelessWidget {
                       ),
                     ),
                     child: ListTile(
-                      leading: Text(nota, style: TextStyle(
+                      title: Text('Alumno: $alumno', style: TextStyle(
                         color: Theme.of(context).colorScheme.primary
                       ),),
-                      title: Text(alumno, style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary
-                      ),),
-                      subtitle: Text(subtitle, style: TextStyle(
+                      subtitle: Text('Curso: $curso \nNota: $nota \nObservaciones: $observaciones', style: TextStyle(
                         color: Theme.of(context).colorScheme.primary
                       ),),
                       trailing: Text(

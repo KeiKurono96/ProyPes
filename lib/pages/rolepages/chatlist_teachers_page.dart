@@ -5,14 +5,16 @@ import 'package:prueba_chat/pages/chat_page.dart';
 import 'package:prueba_chat/services/auth/auth_service.dart';
 import 'package:prueba_chat/services/chat/chat_service.dart';
 
-class ChatlistPage extends StatefulWidget {
-  const ChatlistPage({super.key});
+class ChatlistTeachersPage extends StatefulWidget {
+  final List<dynamic> aulas;
+
+  const ChatlistTeachersPage({super.key, required this.aulas});
 
   @override
-  State<ChatlistPage> createState() => _ChatlistPageState();
+  State<ChatlistTeachersPage> createState() => _ChatlistTeachersPageState();
 }
 
-class _ChatlistPageState extends State<ChatlistPage> {
+class _ChatlistTeachersPageState extends State<ChatlistTeachersPage> {
 
   final ChatService chatService = ChatService();
   final AuthService authService = AuthService();
@@ -67,7 +69,7 @@ class _ChatlistPageState extends State<ChatlistPage> {
 
   Widget buildUserList(){
     return StreamBuilder(
-      stream: chatService.getUsersStreamExcludingBlocked(), 
+      stream: chatService.getUsersStreamExcBloTea(widget.aulas), 
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text("Error..");
@@ -102,8 +104,10 @@ class _ChatlistPageState extends State<ChatlistPage> {
     if (userData["email"] != authService.getCurrentUser()!.email) {
       return UserTile(
         unreadMessagesCount: userData['unreadCount'],
-        text: userData["email"],
+        email: userData["email"],
         role: userData["tipo"],
+        name: userData["nombres"],
+        lastname: userData["apellidos"],
         onTap: () async {
           // Mark All Messages As Read
           await chatService.markMessagesAsRead(userData['uid']);

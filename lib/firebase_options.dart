@@ -42,12 +42,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBQcv_vfU-BUws-ArfCKiC_lbWkr8AZeZI',
-    appId: '1:920476433685:web:36d757f6ccef932824fd1c',
+    appId: '1:920476433685:web:040a74e39bd8d53e24fd1c',
     messagingSenderId: '920476433685',
     projectId: 'ajsmensajes',
     authDomain: 'ajsmensajes.firebaseapp.com',
     storageBucket: 'ajsmensajes.firebasestorage.app',
-    measurementId: 'G-TQSBYEH0E0',
+    measurementId: 'G-TF1REQ3M9F',
   );
 
   static const FirebaseOptions android = FirebaseOptions(

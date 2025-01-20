@@ -1,1 +1,50 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"ajsmensajes","appId":"1:920476433685:android:6fb10d3597fa55cf24fd1c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ajsmensajes","configurations":{"android":"1:920476433685:android:6fb10d3597fa55cf24fd1c","web":"1:920476433685:web:36d757f6ccef932824fd1c","windows":"1:920476433685:web:040a74e39bd8d53e24fd1c"}}}}},"functions":[{"source":"functions","codebase":"default","ignore":["node_modules",".git","firebase-debug.log","firebase-debug.*.log","*.local"]}]}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ajsmensajes",
+          "appId": "1:920476433685:android:6fb10d3597fa55cf24fd1c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ajsmensajes",
+          "configurations": {
+            "android": "1:920476433685:android:6fb10d3597fa55cf24fd1c",
+            "web": "1:920476433685:web:040a74e39bd8d53e24fd1c",
+            "windows": "1:920476433685:web:040a74e39bd8d53e24fd1c"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

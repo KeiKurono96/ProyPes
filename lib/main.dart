@@ -10,7 +10,6 @@ import 'package:prueba_chat/firebase_options.dart';
 import 'package:prueba_chat/services/auth/role_provider.dart';
 import 'package:prueba_chat/services/notifications/globals.dart';
 import 'package:prueba_chat/services/notifications/notification_service.dart';
-import 'package:prueba_chat/services/storage/storage_service.dart';
 import 'package:prueba_chat/themes/theme_provider.dart';
 
 void main() async{
@@ -32,9 +31,6 @@ void main() async{
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => StorageService(),
         ),
         ChangeNotifierProvider(
           create: (_) => UserRoleProvider(),

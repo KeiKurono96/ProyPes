@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
-  final String text;
+  final String email;
   final String role;
+  final String? name;
+  final String? lastname;
   final void Function()? onTap;
   final int unreadMessagesCount;
 
   const UserTile({
     super.key, 
-    required this.text, 
+    required this.email, 
     required this.role,
+    this.name,
+    this.lastname,
     required this.onTap, 
     this.unreadMessagesCount = 0,     
   });
@@ -32,7 +36,9 @@ class UserTile extends StatelessWidget {
               children: [
                 buildIconItem(Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 15,),
-                Text(text, style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                Text('${name ?? ''} ${lastname ?? ''}'.trim().isEmpty ? email : '${name ?? ''} ${lastname ?? ''}'.trim(), 
+                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
               ],
             ),
             unreadMessagesCount > 0 ? Padding(
