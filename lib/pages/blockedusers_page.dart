@@ -50,16 +50,20 @@ class BlockedUsersPage extends StatelessWidget {
         builder: (context, snapshot) {
 
           if(snapshot.hasError){
-            return const Center(
-              child: Text("Error loading.."),
+            return Center(
+              child: Text("Error loading..", style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),),
             );
           }
 
           final blockedUsers = snapshot.data ?? [];
 
           if(blockedUsers.isEmpty){
-            return const Center(
-              child: Text("No existen usuarios bloqueados"),
+            return Center(
+              child: Text("No existen usuarios bloqueados", style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),),
             );
           }
 
@@ -70,6 +74,8 @@ class BlockedUsersPage extends StatelessWidget {
               return UserTile(
                 email: user["email"],
                 role: user["tipo"],
+                name: user["nombres"],  
+                lastname: user["apellidos"],
                 onTap: () => showUnblockBox(context, user['uid']),
               );
             },

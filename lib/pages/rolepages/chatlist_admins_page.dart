@@ -35,7 +35,7 @@ class _ChatlistAdminsPageState extends State<ChatlistAdminsPage> {
                     controller: searchController,
                     decoration: InputDecoration(
                       labelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
-                      labelText: "Buscar por Email",
+                      labelText: "Buscar Email, Nombres o Apellidos",
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Theme.of(context).colorScheme.primary)
                       ),
@@ -70,22 +70,44 @@ class _ChatlistAdminsPageState extends State<ChatlistAdminsPage> {
       stream: chatService.getUsersStreamExcBloAdm(), 
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text("Error..");
+          return Text("Error..", style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          ),);
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child:  CircularProgressIndicator(
             strokeWidth: 10,
           ));
         }
+
         // Filter data based on searchText
         final filteredData = snapshot.data!.where((userData) {
           final email = userData["email"] as String;
-          return email.contains(searchText) &&
-              email != authService.getCurrentUser()!.email;
+
+          // Convert searchText to lowercase for case-insensitive comparison
+          final lowerSearchText = searchText.toLowerCase();
+
+          // Ensure email doesn't match the current user's email
+          if (email != authService.getCurrentUser()!.email) {
+            // Check if "nombres" or "apellidos" contain the searchText
+            final nombresMatch = userData["nombres"] != null &&
+                userData["nombres"].toString().toLowerCase().contains(lowerSearchText);
+            final apellidosMatch = userData["apellidos"] != null &&
+                userData["apellidos"].toString().toLowerCase().contains(lowerSearchText);
+
+            // Return true if either "nombres" or "apellidos" match the searchText
+            return nombresMatch || apellidosMatch || email.toLowerCase().contains(lowerSearchText);
+          }
+
+          return false;
         }).toList();
 
         if (filteredData.isEmpty) {
-          return const Center(child: Text("No users found."));
+          return Center(
+            child: Text("No se encontraron usuarios.", style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),),
+          );
         }
 
         return ListView(

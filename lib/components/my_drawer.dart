@@ -110,7 +110,7 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 20),
             child: ListTile(
-              title: Text("LOG OUT", style: TextStyle(
+              title: Text("Cerrar Sesión", style: TextStyle(
                 color: Theme.of(context).colorScheme.primary
               ),),
               leading: Icon(
