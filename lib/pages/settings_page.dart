@@ -130,6 +130,7 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
+          // Botón de Borrado de cuenta personal
           // Container(
           //   decoration: BoxDecoration(
           //     color: Theme.of(context).colorScheme.inversePrimary,

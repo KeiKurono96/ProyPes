@@ -27,7 +27,7 @@ class _LoginOrRegisterState extends State<LoginOrRegister> {
       );
     } else {
       return RegisterPage(
-        onTap: tooglePages,
+        // onTap: tooglePages,
       );
     }
   }

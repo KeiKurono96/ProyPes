@@ -43,7 +43,7 @@ class GradesPage extends StatelessWidget {
               String alumno = excelRep['alumno'];
               String curso = excelRep['curso'];
               String nota = excelRep['nota'];
-              String observaciones = excelRep['observaciones'];
+              String? observaciones = excelRep['observaciones'] ?? "sin_observaciones";
               Timestamp timestamp = excelRep['timestamp'];
               DateTime createdAt = timestamp.toDate();
 

@@ -51,7 +51,7 @@ class _AdminsPageState extends State<AdminsPage> {
             ),
           ),
           MyMenu(
-            text: 'Enviar Citaciones',
+            text: 'Envío de Citaciones',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
@@ -60,7 +60,7 @@ class _AdminsPageState extends State<AdminsPage> {
             ),
           ),
           MyMenu(
-            text: 'Aulas 2025',
+            text: 'Edición de Aulas',
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(

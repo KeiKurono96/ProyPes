@@ -60,7 +60,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
         showDialog(
           context: context, 
           builder: (context) => AlertDialog(
-            title: Text("Usuario creado, se ha iniciado sesion con ese usuario"),
+            title: Text("Usuario creado, se ha iniciado sesion con ese usuario", style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),),
           ),
         );
         _emailController.text = "";
@@ -72,7 +74,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
         showDialog(
           context: context, 
           builder: (context) => AlertDialog(
-            title: Text(e.toString()),
+            title: Text(e.toString(), style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),),
           ),
         );
         
@@ -80,8 +84,10 @@ class _CreateUserPageState extends State<CreateUserPage> {
     } else {
       showDialog(
         context: context, 
-        builder: (context) => const AlertDialog(
-          title: Text("Las contraseñas no coinciden"),
+        builder: (context) => AlertDialog(
+          title: Text("Las contraseñas no coinciden", style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          ),),
         ),
       );
     }

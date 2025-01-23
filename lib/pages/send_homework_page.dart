@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba_chat/components/my_appbar.dart';
 import 'package:prueba_chat/components/my_button.dart';
@@ -18,6 +19,11 @@ class SendHomeworkPage extends StatefulWidget {
 class _SendHomeworkPageState extends State<SendHomeworkPage> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool _isLoading = false; // To track loading state
+  String resultsText = "";
+
+  bool isValid(String? value) {
+    return value != null && value != "null";
+  }
 
   Future<void> handleExcelImport() async {
     setState(() {
@@ -27,12 +33,24 @@ class _SendHomeworkPageState extends State<SendHomeworkPage> {
       // Step 1: Pick the file
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['xls', 'xlsx'],
+        allowedExtensions: ['xls', 'xlsx', 'xlsm'],
       );
       if (result == null) return; // User canceled the picker
 
-      // Step 2: Parse the Excel file
-      final bytes = result.files.single.bytes ?? File(result.files.single.path!).readAsBytesSync();
+      // Step 2: Determine the platform and handle file path/byte
+      String? filePath;
+      List<int>? bytes;
+
+      if (kIsWeb) {
+        bytes = result.files.single.bytes!;
+      } else if (Platform.isAndroid || Platform.isWindows) {
+        filePath = result.files.single.path!;
+        bytes = File(filePath).readAsBytesSync();
+      } else {
+        throw Exception("Unsupported platform");
+      }
+
+      // Step 3: Parse the Excel file
       var excel = Excel.decodeBytes(bytes);
 
       // Check if "AppTar" exists
@@ -55,30 +73,36 @@ class _SendHomeworkPageState extends State<SendHomeworkPage> {
         String? classroom = row[0]?.value.toString(); // Aula
         String? homework = row[1]?.value.toString(); // Tarea
 
-        if (classroom != null && homework != null) {
-          // Option 1: Add to "Homework" collection
-          await firestore.collection("Homework").add({
-            'aula': classroom,
-            'homework': homework,
-            'createdBy': currUser,
-            'timestamp': DateTime.now(),
-          });
-          if(!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds:2), 
-              content: Text('Se registró la tarea para el aula $classroom')),
-          );
-        }        
+        if (isValid(classroom) && isValid(homework)) {
+          var classroomDoc = await FirebaseFirestore.instance
+            .collection("Classrooms")
+            .where("name", isEqualTo: classroom)
+            .limit(1)
+            .get();
+
+          if (classroomDoc.docs.isNotEmpty) {
+            await firestore.collection("Homework").add({
+              'aula': classroom,
+              'homework': homework,
+              'createdBy': currUser,
+              'timestamp': DateTime.now(),
+            });
+            // excel.removeRow("AppInc", i);
+            resultsText = "$resultsText \n(${i+1})Se registró la tarea para el aula $classroom";
+          } else {
+            resultsText = "$resultsText \n(${i+1})No se encontró el aula $classroom, revise la escritura";
+          }
+        } else {
+          resultsText = "$resultsText \n(${i+1})Faltan llenar los campos";
+        }
       }
+      
     } catch (e) {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error de guardado $e')),
-      );
+      resultsText = "$resultsText \nError de Guardado: $e";
     } finally {
       setState(() {
         _isLoading = false;
+        resultsText;
       });
     }
   }
@@ -103,6 +127,13 @@ class _SendHomeworkPageState extends State<SendHomeworkPage> {
             Padding(
               padding: const EdgeInsets.all(25),
               child: Text(a+b,
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Text("Resultados :\n$resultsText",
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 textAlign: TextAlign.center,
               ),

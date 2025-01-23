@@ -65,9 +65,11 @@ class _RoleGateState extends State<RoleGate> {
       case 'Apoderado':
         return const ParentsPage();
       default:
-        return const Scaffold(
+        return Scaffold(
           body: Center(
-            child: Text("Error desconocido. Porfavor contacte a soporte."),
+            child: Text("Error desconocido. Porfavor contacte a soporte.", style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            )),
           ),
         );
     }

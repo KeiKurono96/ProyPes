@@ -31,7 +31,9 @@ class _ChatlistParentsPageState extends State<ChatlistParentsPage> {
       stream: chatService.getUsersStreamExcBloPar(widget.aulas), 
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text("Error..");
+          return Text("Error..", style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          ),);
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child:  CircularProgressIndicator(

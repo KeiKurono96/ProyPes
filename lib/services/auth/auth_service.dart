@@ -86,7 +86,37 @@ class AuthService {
       
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+      // throw Exception(e.code);
+      switch (e.code) {
+        case "ERROR_EMAIL_ALREADY_IN_USE":
+        case "account-exists-with-different-credential":
+        case "email-already-in-use":
+          throw Exception("Este correo ya se está usando");
+        case "ERROR_WRONG_PASSWORD":
+        case "wrong-password":
+          throw Exception("El correo o la contraseña no son correctos");
+        case "ERROR_USER_NOT_FOUND":
+        case "user-not-found":
+          throw Exception("No se encontró un usuario con ese correo");
+        case "ERROR_USER_DISABLED":
+        case "user-disabled":
+          throw Exception("Esta usuario se encuentra deshabilitado");
+        case "ERROR_TOO_MANY_REQUESTS":
+        case "operation-not-allowed":
+          throw Exception("Demasiados intentos para entrar en esta cuenta");
+        case "ERROR_OPERATION_NOT_ALLOWED":
+          throw Exception("Error del servidor, por favor inténtalo más tarde.");
+        case "ERROR_INVALID_CREDENTIAL":
+        case "invalid-credential":
+          throw Exception("Datos inválidos");
+        case "ERROR_INVALID_EMAIL":
+        case "invalid-email":
+          throw Exception("Por favor ingresa un correo válido");
+        case "missing-password":
+          throw Exception("Falta la contraseña");
+        default:
+          throw Exception("Error desconocido, inicio de sesión falló");
+      }
     }
   }
 
@@ -111,7 +141,37 @@ class AuthService {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+      // throw Exception(e.code);
+      switch (e.code) {
+        case "ERROR_EMAIL_ALREADY_IN_USE":
+        case "account-exists-with-different-credential":
+        case "email-already-in-use":
+          throw Exception("Este correo ya se está usando");
+        case "ERROR_WRONG_PASSWORD":
+        case "wrong-password":
+          throw Exception("El correo o la contraseña no son correctos");
+        case "ERROR_USER_NOT_FOUND":
+        case "user-not-found":
+          throw Exception("No se encontró un usuario con ese correo");
+        case "ERROR_USER_DISABLED":
+        case "user-disabled":
+          throw Exception("Esta usuario se encuentra deshabilitado");
+        case "ERROR_TOO_MANY_REQUESTS":
+        case "operation-not-allowed":
+          throw Exception("Demasiados intentos para entrar en esta cuenta");
+        case "ERROR_OPERATION_NOT_ALLOWED":
+          throw Exception("Error del servidor, por favor inténtalo más tarde.");
+        case "ERROR_INVALID_CREDENTIAL":
+        case "invalid-credential":
+          throw Exception("Datos inválidos");
+        case "ERROR_INVALID_EMAIL":
+        case "invalid-email":
+          throw Exception("Por favor ingresa un correo válido");
+        case "missing-password":
+          throw Exception("Falta la contraseña");
+        default:
+          throw Exception("Error desconocido, inicio de sesión falló");
+      }
     }
   }
 

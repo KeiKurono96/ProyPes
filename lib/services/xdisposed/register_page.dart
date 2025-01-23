@@ -4,9 +4,9 @@ import 'package:prueba_chat/components/my_button.dart';
 import 'package:prueba_chat/components/my_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
-  final void Function()? onTap;
+  // final void Function()? onTap;
 
-  const RegisterPage({super.key, required this.onTap});
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -134,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 GestureDetector(
-                  onTap: widget.onTap,
+                  // onTap: widget.onTap,
                   child: Text("Ingresar",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,

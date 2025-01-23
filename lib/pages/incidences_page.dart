@@ -29,7 +29,7 @@ class IncidencesPage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('Felicidades, no hay incidencias por el momento.', style: TextStyle(
+            return Center(child: Text('Felicidades, ninguno de sus hijos tiene incidencias por el momento.', style: TextStyle(
               color: Theme.of(context).colorScheme.primary
             ),));
           }
