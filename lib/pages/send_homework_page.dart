@@ -109,8 +109,8 @@ class _SendHomeworkPageState extends State<SendHomeworkPage> {
 
   @override
   Widget build(BuildContext context) {
-    String a = "Recuerda que el archivo debe tener la hoja con ";
-    String b = "el nombre AppTar y las columnas predefinidas: aula y tareas";
+    String a = "Recuerda que el archivo debe tener la hoja con el nombre AppTar";
+    String b = " y las primeras 2 columnas predefinidas: aula y tareas";
     return Scaffold(
       appBar: const MyAppbar(title: "Generar Reporte Tareas"),
       body: Padding(

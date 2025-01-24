@@ -119,8 +119,8 @@ class _SendGradesPageState extends State<SendGradesPage> {
 
   @override
   Widget build(BuildContext context) {
-    String a = "Recuerda que el archivo debe tener la hoja con el nombre AppCal ";
-    String b = "y las columnas predefinidas: email, alumno, curso, nota y observaciones(opcional)";
+    String a = "Recuerda que el archivo debe tener la hoja con el nombre AppCal y las 5 columnas";
+    String b = " predefinidas: correo del apoderado, alumno, curso, nota y observaciones(opcional)";
     return Scaffold(
       appBar: const MyAppbar(title: "Enviar Calificaciones"),
       body: Padding(

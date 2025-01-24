@@ -134,8 +134,8 @@ class _SendIncidencesPageState extends State<SendIncidencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    String a = "Recuerda que el archivo debe tener la hoja con ";
-    String b = "el nombre AppInc y las columnas predefinidas: email, alumno y mensaje";
+    String a = "Recuerda que el archivo debe tener la hoja con el nombre AppInc";
+    String b = " y las primeras 3 columnas predefinidas: correo del apoderado, alumno y la incidencia";
     return Scaffold(
       appBar: const MyAppbar(title: "Enviar Incidencias"),
       body: Padding(
