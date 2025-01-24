@@ -169,6 +169,8 @@ class AuthService {
           throw Exception("Por favor ingresa un correo válido");
         case "missing-password":
           throw Exception("Falta la contraseña");
+        case "weak-password":
+          throw Exception("La contraseña debe tener al menos 6 caracteres");
         default:
           throw Exception("Error desconocido, inicio de sesión falló");
       }
