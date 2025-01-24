@@ -219,7 +219,7 @@ exports.sendGradeBasedNotifications = functions.firestore
     }
 });
 
-// NO NOTIFICATION, function to delete a different user (for admins)
+// NO NOTIFICATION, function to delete a different user and it's subcollections (for admins)
 exports.deleteUser = functions.https.onCall(async (data, context) => {
   const callerUid = context.auth?.uid;
   if (!callerUid) {
@@ -247,13 +247,35 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
       );
     }
 
+    // Function to recursively delete subcollections
+    async function deleteSubcollections(docRef) {
+      const subcollections = await docRef.listCollections();
+      for (const subcollection of subcollections) {
+        const subcollectionDocs = await subcollection.get();
+        const batch = admin.firestore().batch();
+        subcollectionDocs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+        await batch.commit();
+        // Recursively delete nested subcollections
+        for (const doc of subcollectionDocs.docs) {
+          await deleteSubcollections(doc.ref);
+        }
+      }
+    }
+
+    const userDocRef = admin.firestore().collection("Users").doc(uidToDelete);
+
+    // Delete all subcollections
+    await deleteSubcollections(userDocRef);
+
     // Delete the user from Firebase Authentication
     await admin.auth().deleteUser(uidToDelete);
 
     // Remove the user's Firestore document
-    await admin.firestore().collection("Users").doc(uidToDelete).delete();
+    await userDocRef.delete();
 
-    return { message: "User deleted successfully." };
+    return { message: "User and all associated data deleted successfully." };
   } catch (error) {
     throw new functions.https.HttpsError(
       "internal",
